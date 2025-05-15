@@ -20,8 +20,8 @@ repositories {
 }
 
 tasks.compileJava {
-    sourceCompatibility = JavaVersion.VERSION_22.toString()
-    targetCompatibility = JavaVersion.VERSION_22.toString()
+    sourceCompatibility = JavaVersion.VERSION_21.toString()
+    targetCompatibility = JavaVersion.VERSION_21.toString()
     options.encoding = "UTF-8"
 }
 
