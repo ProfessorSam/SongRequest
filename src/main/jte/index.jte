@@ -36,7 +36,7 @@
 
     <div id="errorMessage" class="alert alert-danger d-none" role="alert"></div>
 
-    <form id="linkForm" hx-post="/api/postlink/" hx-target="#videoComponent" hx-swap="innerHTML">
+    <form id="linkForm" hx-post="/api/postlink/" hx-target="#videoComponent" hx-swap="innerHTML" onsubmit="clearErrorMessage()">
         <div class="mb-3">
             <label for="youtubeLink" class="form-label">YouTube-Link</label>
             <input type="url" class="form-control" id="youtubeLink" name="link" required>
@@ -51,10 +51,19 @@
 
 <script>
     @raw
+    function clearErrorMessage() {
+        const err = document.getElementById('errorMessage');
+        if (err) err.classList.add('d-none');
+    }
+
     document.body.addEventListener('htmx:responseError', function(evt) {
         const err = document.getElementById('errorMessage');
         err.classList.remove('d-none');
-        err.innerText = 'Ungültiger YouTube-Link oder ein Fehler ist aufgetreten. Bitte erneut versuchen.';
+        if (evt.detail && evt.detail.xhr && evt.detail.xhr.responseText) {
+            err.innerText = evt.detail.xhr.responseText;
+        } else {
+            err.innerText = 'Ungültiger YouTube-Link oder ein Fehler ist aufgetreten. Bitte erneut versuchen.';
+        }
     });
     @endraw
 </script>

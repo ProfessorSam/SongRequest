@@ -1,0 +1,12 @@
+services:
+  db:
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    container_name: database
+    restart: "unless-stopped"
+    environment:
+      MYSQL_ROOT_PASSWORD: song
+      MYSQL_DATABASE: song
+      MYSQL_USER: song
+      MYSQL_PASSWORD: song

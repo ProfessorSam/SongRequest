@@ -13,6 +13,10 @@ dependencies {
     implementation("io.javalin:javalin-rendering:6.6.0")
     implementation("gg.jte:jte:3.2.1")
     implementation("org.slf4j:slf4j-simple:2.0.17")
+    implementation("com.google.api-client:google-api-client:1.15.0")
+    implementation("com.google.apis:google-api-services-youtube:v3-rev222-1.25.0")
+    implementation("com.google.oauth-client:google-oauth-client-jetty:1.39.0")
+    implementation("io.github.cdimascio:dotenv-java:3.2.0")
 }
 
 repositories {
