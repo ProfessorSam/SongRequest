@@ -1,6 +1,7 @@
 package de.professorsam.songrequest;
 
 import de.professorsam.songrequest.data.Course;
+import de.professorsam.songrequest.data.DatabaseHandler;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.DirectoryCodeResolver;
@@ -9,6 +10,7 @@ import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +22,7 @@ public class SongRequest {
     private final Dotenv env;
     private static SongRequest instance;
     private final List<Course> courses;
+    private DatabaseHandler databaseHandler;
 
     public static void main(String[] args) {
         new SongRequest().start();
@@ -50,6 +53,18 @@ public class SongRequest {
         app.post("/api/courses/add", new AdminPostHandler());
         app.post("/api/students/delete", new AdminPostHandler());
         app.start(8080);
+        String host = env.get("DB_HOST");
+        int port = Integer.parseInt(env.get("DB_PORT"));
+        String database = env.get("DB_DATABASE");
+        String username = env.get("DB_USER");
+        String password = env.get("DB_PASSWORD");
+        databaseHandler = new DatabaseHandler(host, port, database, username, password);
+        try {
+            databaseHandler.innit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        databaseHandler.load();
     }
 
     private boolean isDevelopmentMode()
@@ -57,11 +72,14 @@ public class SongRequest {
         return env.get("DEV_MODE") != null && env.get("DEV_MODE").equalsIgnoreCase("true");
     }
 
+    public DatabaseHandler getDatabaseHandler(){
+        return databaseHandler;
+    }
     public YoutubeHandler getYoutubeHandler() {
         return youtubeHandler;
     }
 
-    public List<Course> getCourses() {
+    public synchronized List<Course> getCourses() {
         return courses;
     }
 

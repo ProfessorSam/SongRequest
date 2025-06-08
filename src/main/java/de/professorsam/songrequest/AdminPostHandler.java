@@ -26,6 +26,7 @@ public class AdminPostHandler implements Handler {
                 course.students().add(new Student(UUID.randomUUID().toString(), name, "", 0));
             }
             ctx.redirect("/admin");
+            SongRequest.getInstance().getDatabaseHandler().save();
             return;
         }
         if(ctx.path().equals("/api/courses/add")) {
@@ -36,6 +37,8 @@ public class AdminPostHandler implements Handler {
             }
             SongRequest.getInstance().getCourses().add(new Course(UUID.randomUUID().toString(), name, new ArrayList<>()));
             ctx.redirect("/admin");
+            SongRequest.getInstance().getDatabaseHandler().save();
+            return;
         }
         if(ctx.path().equals("/api/students/delete")) {
             String id = ctx.formParam("id");
@@ -47,6 +50,7 @@ public class AdminPostHandler implements Handler {
                 for(Student student : course.students()){
                     if(student.id().equals(id)){
                         course.students().remove(student);
+                        SongRequest.getInstance().getDatabaseHandler().removeStudent(student);
                         break;
                     }
                 }
