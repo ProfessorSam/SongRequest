@@ -21,7 +21,6 @@
 
     <input type="hidden" name="videoId" value="${context.videoId()}">
     <input type="hidden" name="startTime" id="startTimeHidden" value="0">
-    <input type="hidden" name="userId" value="${context.userid()}">
 
     <div class="mb-3">
         <label for="startTime" class="form-label fw-bold">Startzeit auswählen</label>
@@ -124,6 +123,12 @@
         const err = document.getElementById('errorMessage');
         err.classList.remove('d-none');
         err.textContent = 'Fehler beim Absenden. Bitte überprüfe deine Eingabe.';
+    });
+
+    document.getElementById('timeSelectForm').addEventListener('htmx:afterOnLoad', (evt) => {
+        if (evt.detail.xhr.status === 200) {
+            window.location.href = '/done';
+        }
     });
     @endraw
 </script>

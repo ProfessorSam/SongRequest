@@ -12,7 +12,6 @@ import io.javalin.rendering.template.JavalinJte;
 import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -45,13 +44,14 @@ public class SongRequest {
                 config.fileRenderer(new JavalinJte(TemplateEngine.createPrecompiled(ContentType.Html)));
             }
         });
-        app.get("/", ctx -> ctx.render("index.jte", Collections.singletonMap("context", new IndexCtx("John", "Maths LK-1"))));
+        app.get("/s/{student}", new IndexGetHandler());
         app.post("/api/postlink/", new PostLinkHandler());
         app.post("/api/done/", new FormSubmitHandler());
         app.get("/admin/", new AdminGetHandler());
         app.post("/api/students/add", new AdminPostHandler());
         app.post("/api/courses/add", new AdminPostHandler());
         app.post("/api/students/delete", new AdminPostHandler());
+        app.get("/done", ctx -> ctx.render("done.jte"));
         app.start(8080);
         String host = env.get("DB_HOST");
         int port = Integer.parseInt(env.get("DB_PORT"));

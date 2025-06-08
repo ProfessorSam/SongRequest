@@ -18,6 +18,7 @@ dependencies {
     implementation("com.google.oauth-client:google-oauth-client-jetty:1.39.0")
     implementation("io.github.cdimascio:dotenv-java:3.2.0")
     implementation("org.mariadb.jdbc:mariadb-java-client:3.5.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
 }
 
 repositories {

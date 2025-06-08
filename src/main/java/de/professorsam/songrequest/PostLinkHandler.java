@@ -31,7 +31,7 @@ public class PostLinkHandler implements Handler {
                 context.status(400);
                 return;
             }
-            VideoComponentCtx componentCtx = new VideoComponentCtx(videoid, duration.toSeconds(), "123");
+            VideoComponentCtx componentCtx = new VideoComponentCtx(videoid, duration.toSeconds());
             context.render("video-component.jte", Collections.singletonMap("context", componentCtx));
         } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
