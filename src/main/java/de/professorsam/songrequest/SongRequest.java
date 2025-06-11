@@ -52,6 +52,7 @@ public class SongRequest {
         app.post("/api/courses/add", new AdminPostHandler());
         app.post("/api/students/delete", new AdminPostHandler());
         app.get("/done", ctx -> ctx.render("done.jte"));
+        app.get("/api/export", new DataExportHandler());
         app.start(8080);
         String host = env.get("DB_HOST");
         int port = Integer.parseInt(env.get("DB_PORT"));

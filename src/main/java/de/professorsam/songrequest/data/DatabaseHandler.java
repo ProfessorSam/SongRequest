@@ -170,7 +170,7 @@ public class DatabaseHandler {
         try {
             return (Connection) DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port + "/" + database, username, password);
         } catch (SQLException e) {
-            if(tries <= 5){
+            if(tries <= 10){
                 System.out.println("Failed to connect to " + host + ":" + port + "/" + database +"! Try nr. " + tries);
                 tries++;
                 try {

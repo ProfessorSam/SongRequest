@@ -1,5 +1,6 @@
 package de.professorsam.songrequest.data;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.professorsam.songrequest.SongRequest;
 
 import java.util.Objects;
@@ -36,18 +37,22 @@ public class Student {
                 """, name, SongRequest.getInstance().getAppHost() + "/s/" + id);
     }
 
+    @JsonProperty
     public String id() {
         return id;
     }
 
+    @JsonProperty
     public String name() {
         return name;
     }
 
+    @JsonProperty
     public String videoID() {
         return videoID;
     }
 
+    @JsonProperty
     public int startTime() {
         return startTime;
     }
