@@ -40,14 +40,32 @@
                         @for(var student : course.students())
                             <div class="card mb-2 draggable" id="student-${student.id()}">
                                 <div class="card-body p-2 d-flex justify-content-between align-items-center">
-                                    <span>${student.name()}</span>
-                                    <form hx-post="/api/students/delete"
-                                          hx-target="#student-${student.id()}"
-                                          hx-swap="outerHTML"
-                                          class="d-inline mb-0">
-                                        <input type="hidden" name="id" value="${student.id()}">
-                                        <button type="submit" class="btn btn-sm btn-danger">✕</button>
-                                    </form>
+                                    <div class="card-body p-2 d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div>${student.name()}</div>
+                                            <div class="d-flex align-items-center gap-2 mt-1">
+                                                <span class="dot" style="height: 10px; width: 10px; border-radius: 50%; display: inline-block; background-color: ${student.videoID().isEmpty() ? "red" : "green"};"></span>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-outline-secondary py-0 px-1"
+                                                        onclick="copyTextToClipboard('${student.generateEmail()}')">
+                                                    📋
+                                                </button>
+                                                @if (!student.videoID().isEmpty())
+                                                    <a class="btn btn-sm btn-outline-secondary py-0 px-1"
+                                                       href="https://youtube.com/watch?v=${student.videoID()}&t=${student.startTime()}" target="_blank">
+                                                        ▶️
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <form hx-post="/api/students/delete"
+                                              hx-target="#student-${student.id()}"
+                                              hx-swap="outerHTML"
+                                              class="d-inline mb-0">
+                                            <input type="hidden" name="id" value="${student.id()}">
+                                            <button type="submit" class="btn btn-sm btn-danger">✕</button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         @endfor
@@ -112,6 +130,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+
+    function copyTextToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            console.log("Text copied to clipboard");
+        }).catch(err => {
+            console.error("Failed to copy:", err);
+        });
+    }
+
     function registerStudentModalListener() {
         const studentModal = document.getElementById('addStudentModal');
         if (!studentModal) return;

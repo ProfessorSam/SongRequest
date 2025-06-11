@@ -72,6 +72,9 @@ public class SongRequest {
         return env.get("DEV_MODE") != null && env.get("DEV_MODE").equalsIgnoreCase("true");
     }
 
+    public String getAppHost(){
+        return env.get("APP_HOST");
+    }
     public DatabaseHandler getDatabaseHandler(){
         return databaseHandler;
     }

@@ -1,8 +1,10 @@
 package de.professorsam.songrequest.data;
 
+import de.professorsam.songrequest.SongRequest;
+
 import java.util.Objects;
 
-public final class Student {
+public class Student {
     private final String id;
     private final String name;
     private String videoID;
@@ -13,6 +15,25 @@ public final class Student {
         this.name = name;
         this.videoID = videoID;
         this.startTime = startTime;
+    }
+
+    public String generateEmail(){
+        return String.format("""
+                Hey %s,
+                
+                zur übergabe deines Zeugnisses erhältst du die Möglichkeit dir einen Song zu
+                wünschen. Gehe dazu auf YouTube und suche deinen Song raus. Gehe auf den
+                Link unten und füge dort den Link zu dem Song ein. Wenn du möchtest kannst
+                du dann noch eine Startzeit für den Song wählen (z.B zur 2. Strophe).
+                Gehe dann auf "Song einreichen" um ihn abzugeben.
+                Bitte beachte, dass dieser Song nicht indiziert und zur Feierlichkeit
+                passen sollte. Alle Songs werden vorher einzeln geprüft.
+                
+                Dein Link lautet: %s
+                
+                Liebe Grüße
+                Samuel Rosenstein & Finn Grauwinkel
+                """, name, SongRequest.getInstance().getAppHost() + "/s/" + id);
     }
 
     public String id() {
