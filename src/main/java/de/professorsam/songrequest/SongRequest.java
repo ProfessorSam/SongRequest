@@ -28,7 +28,7 @@ public class SongRequest {
     }
 
     public SongRequest(){
-        env = Dotenv.configure().load();
+        env = Dotenv.configure().ignoreIfMissing().load();
         youtubeHandler = new YoutubeHandler(env.get("YT_API_KEY"));
         instance = this;
         courses = new ArrayList<>();
@@ -46,8 +46,8 @@ public class SongRequest {
         });
         app.get("/s/{student}", new IndexGetHandler());
         app.post("/api/postlink/", new PostLinkHandler());
-        app.post("/api/done/", new FormSubmitHandler());
         app.get("/admin/", new AdminGetHandler());
+        app.post("/api/done/", new FormSubmitHandler());
         app.post("/api/students/add", new AdminPostHandler());
         app.post("/api/courses/add", new AdminPostHandler());
         app.post("/api/students/delete", new AdminPostHandler());

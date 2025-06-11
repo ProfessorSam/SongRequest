@@ -4,9 +4,40 @@ services:
     ports:
       - "3306:3306"
     container_name: database
-    restart: "unless-stopped"
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: song
       MYSQL_DATABASE: song
       MYSQL_USER: song
       MYSQL_PASSWORD: song
+    networks:
+      - db
+    healthcheck:
+      test: [ "CMD", "mariadb-admin", "ping", "-h", "localhost" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    image: ghcr.io/professorsam/songrequest:1.0
+    ports:
+      - "8080:8080"
+    container_name: app
+    restart: "unless-stopped"
+    environment:
+      DEV_MODE: false
+      YT_API_KEY: ${YT_API_KEY}
+      APP_HOST: localhost
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: song
+      DB_PASSWORD: song
+      DB_DATABASE: song
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - db
+
+networks:
+  db:

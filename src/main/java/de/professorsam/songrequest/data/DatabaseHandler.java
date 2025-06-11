@@ -161,10 +161,25 @@ public class DatabaseHandler {
         }
     }
 
-    public Connection connect(){
+    private Connection connect(){
+        return connect(1);
+    }
+
+    private Connection connect(int tries)
+    {
         try {
             return (Connection) DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port + "/" + database, username, password);
         } catch (SQLException e) {
+            if(tries <= 5){
+                System.out.println("Failed to connect to " + host + ":" + port + "/" + database +"! Try nr. " + tries);
+                tries++;
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+                return connect(tries);
+            }
             throw new RuntimeException(e);
         }
     }
